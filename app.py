@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,render_template,flash
 import mysql.connector
 import time
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 #conet to mysql
 def connect():
     return mysql.connector.connect(
-    host="db",
+    host="localhost",
     user="root",
     password="root",
     database="crc",
@@ -47,18 +47,21 @@ def sql_delete(id):
 
 @app.route('/')
 def welcom():
-  return "welcom"
+  return render_template("index.html")
 
 #insert a new criminal in db
-@app.route('/add',methods=['POST'])
+@app.route('/add',methods=['POST','GET'])
 def add():
-    data = request.get_json()
-    id = data['id']
-    first_name = data['first_name']
-    last_name = data['last_name']
-    
+    # data = request.get_json()
+    # id = data['id']
+    # first_name = data['first_name']
+    # last_name = data['last_name']
+    id = request.form.get['id']
+    first_name=request.form.get['first_name']
+    last_name=request.form.get['last_name']
+    render_template("index.html")
     sql_insert(id,first_name,last_name)
-    return "ok"
+    return  f"ID: {id}<br>First Name: {first_name}<br>Last Name: {last_name}"
 
 #get all criminal list im db
 @app.route('/all',methods=['GET'])
