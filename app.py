@@ -52,16 +52,13 @@ def welcom():
 #insert a new criminal in db
 @app.route('/add',methods=['POST','GET'])
 def add():
-    # data = request.get_json()
-    # id = data['id']
-    # first_name = data['first_name']
-    # last_name = data['last_name']
-    id = request.form.get['id']
-    first_name=request.form.get['first_name']
-    last_name=request.form.get['last_name']
-    render_template("index.html")
-    sql_insert(id,first_name,last_name)
-    return  f"ID: {id}<br>First Name: {first_name}<br>Last Name: {last_name}"
+    if request.method == 'POST':
+      id = request.form.get('id')
+      first_name=request.form.get('first_name')
+      last_name=request.form.get('last_name')
+      sql_insert(id,first_name,last_name)
+      return  "criminal added"
+    return render_template("add.html")
 
 #get all criminal list im db
 @app.route('/all',methods=['GET'])
@@ -71,33 +68,26 @@ def all():
 
 
 #serch for Specific criminal in db
-@app.route('/find',methods=['GET'])
+@app.route('/find',methods=['GET','POST'])
 def find():
-  check_id= request.args.get('id')   
-  command =f"select id,first_name,last_name from criminals where id ={check_id};"
-  criminal=sql_command(command)
-  #criminal became a list 
-  if len(criminal)==0:
-    return "criminal not found"
-  else:
+  if request.method == 'POST':
+    check_id= request.form.get('id')   
+    command =f"select id,first_name,last_name from criminals where id ={check_id};"
+    criminal=sql_command(command)
     return jsonify(criminal)
+  return render_template("find.html")
+  
 
 
 
-@app.route('/delete',methods=['GET'])
+@app.route('/delete',methods=['GET','POST'])
 def delete():
-  criminal_to_rm=request.args.get('id')
-  check_before=sql_command("select * from criminals;")
-  print(len(check_before))
-  sql_delete(criminal_to_rm)
-  time.sleep(5)
-  print(len(check_after))
-  check_after=sql_command("select * from criminals;")
-  if len(check_before)==len(check_after):
-    
-    return "wrong id"
-  else:
-    return "criminal removed"
+  if request.method == 'POST':
+    criminal_to_rm=request.form.get('id')
+    sql_delete(criminal_to_rm)
+    return "criminal removd"
+  return render_template("delete.html")
+ 
 
 
 
