@@ -47,7 +47,7 @@ def sql_delete(id):
 
 @app.route('/')
 def welcom():
-  return render_template("index.html")
+  return render_template("home2.html")
 
 #insert a new criminal in db
 @app.route('/add',methods=['POST','GET'])
@@ -68,14 +68,15 @@ def all():
 
 
 #serch for Specific criminal in db
-@app.route('/find',methods=['GET','POST'])
+@app.route('/find', methods=['GET', 'POST'])
 def find():
-  if request.method == 'POST':
-    check_id= request.form.get('id')   
-    command =f"select id,first_name,last_name from criminals where id ={check_id};"
-    criminal=sql_command(command)
-    return jsonify(criminal)
-  return render_template("find.html")
+    if request.method == 'POST':
+        check_id = request.form.get('id')
+        if check_id:
+            command = f"SELECT id, first_name, last_name FROM criminals WHERE id={check_id};"
+            criminal = sql_command(command)
+            return jsonify(criminal)
+    return render_template('find.html')
   
 
 
