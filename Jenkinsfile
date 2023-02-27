@@ -17,7 +17,7 @@ pipeline{
             }
             steps{
                 script{
-                    sh"git branch"
+                    sh"git log -1 --format=%H"
                 }
             }
         }
