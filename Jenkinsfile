@@ -17,7 +17,7 @@ pipeline{
             }
             steps{
                 script{
-                    sh"git log -1 --format=%H"
+                    sh"hello word"
                 }
             }
         }
