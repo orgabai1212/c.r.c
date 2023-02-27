@@ -4,15 +4,20 @@ pipeline{
     stages{
         stage("checkout"){
             steps{
+                deleteDir{}
                checkout scm
             }
-            post{
-                
-                success{
-                    echo "good"
-                }
-                failure{
-                    echo "bad"
+            
+        }
+        stage("version"){
+            when{
+               expression{ 
+                return GIT_BRANCH.contains("relese")
+               }
+            }
+            steps{
+                script{
+                    sh"git branch"
                 }
             }
         }
