@@ -21,12 +21,12 @@ pipeline{
                 script{
                     
                     sh "latest_tag=\$(git describe --tags --abbrev=0)"
-                    sh "major=\$(echo \$latest_tag | awk -F\. '{print \$1}')"
+                    sh "major=\$(echo \$latest_tag | awk -F\\. '{print \$1}')"
                     sh "echo \$major"
-                    sh "minor=\$(echo \$latest_tag | awk -F\. '{print \$2}')"
+                    sh "minor=\$(echo \$latest_tag | awk -F\\. '{print \$2}')"
                     sh "echo \$minor"
 
-                    sh "patch=\$(echo \$latest_tag | awk -F\. '{print \$3}')"
+                    sh "patch=\$(echo \$latest_tag | awk -F\\. '{print \$3}')"
                     sh "echo \$patch"
                     sh ''' patch=\$((patch + 1))'''
                     sh "echo \$patch"
