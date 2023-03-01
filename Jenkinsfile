@@ -1,8 +1,7 @@
 pipeline{
     agent any
     environment {
-    
-        new_tag = ''
+        new_tag = ""
     }
 
     stages{
