@@ -2,6 +2,9 @@ pipeline{
     agent any
     environment {
         new_tag = ""
+        major=""
+        minor=""
+        patch=""
     }
 
     stages{
@@ -21,13 +24,18 @@ pipeline{
                 script{
                     
                     sh "latest_tag=\$(git describe --tags --abbrev=0)"
-                    sh "major=\$(echo \$latest_tag | awk -F\\. '{print \$1}')"
-                    sh "echo \$major"
-                    sh "minor=\$(echo \$latest_tag | awk -F\\. '{print \$2}')"
-                    sh "echo \$minor"
-
-                    sh "patch=\$(echo \$latest_tag | awk -F\\. '{print \$3}')"
-                    sh "echo \$patch"
+                    def majorOutput = sh(returnStdout: true, script: "major=\$(echo \$latest_tag | awk -F\\. '{print \$1}')")
+                    def minorOutput = sh(returnStdout: true, script: "minor=\$(echo \$latest_tag | awk -F\\. '{print \$2}')")
+                    def patchOutput = sh(returnStdout: true, script: "patch=\$(echo \$latest_tag | awk -F\\. '{print \$3}')")
+                    major=majorOutput.trim()
+                    minor=minorOutput.trim()
+                    patch=patchOutput.trim()
+                    
+                    sh "echo ${major}"
+                    sh "echo ${minor}"
+                    sh "echo ${patch}"
+                    patch++
+                    println "${patch}"
                     sh ''' patch=\$((patch + 1))'''
                     sh "echo \$patch"
                     def commandOutput = sh(returnStdout: true, script: 'echo "\$major.\$minor.\$patch"')
