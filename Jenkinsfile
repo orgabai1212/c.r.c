@@ -25,7 +25,7 @@ pipeline{
                     sh "patch=\$(echo \$latest_tag | awk -F. '{print \$3}')"
                     sh ''' patch=\$(echo "\$patch + 1" | bc)'''
                     def commandOutput = sh(returnStdout: true, script: 'echo "hello world"')
-                    env.new_tag = commandOutput.trim()
+                    new_tag = commandOutput.trim()
                     sh "git tag ${new_tag}" 
 
                 }
