@@ -23,7 +23,7 @@ pipeline{
                     sh "major=\$(echo \$latest_tag | awk -F. '{print \$1}')"
                     sh "minor=\$(echo \$latest_tag | awk -F. '{print \$2}')"
                     sh "patch=\$(echo \$latest_tag | awk -F. '{print \$3}')"
-                    sh ''' patch=\$(echo "\$patch + 1" | bc)'''
+                    sh ''' patch=\$((patch + 1))'''
                     def commandOutput = sh(returnStdout: true, script: 'echo "\$major.\$minor.\$patch"')
                     new_tag = commandOutput.trim()
                     sh "git tag ${new_tag}" 
