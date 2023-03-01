@@ -25,7 +25,7 @@ pipeline{
                     
                     sh "latest_tag=\$(git describe --tags --abbrev=0)"
                     def latest_tag = sh(returnStdout: true, script: """latest_tag=\$(git describe --tags --abbrev=0)""")
-                    sh "echo latest_tag: $latest_tag"
+                    sh "echo latest_tag: ${latest_tag}"
                     def majorOutput = sh(returnStdout: true, script: """major=\$(echo "$latest_tag" | cut -d '.' -f1)""")
                     def minorOutput = sh(returnStdout: true, script: """minor=\$(echo "$latest_tag" | cut -d '.' -f1)""")
                     def patchOutput = sh(returnStdout: true, script: """patch=\$(echo "$latest_tag" | cut -d '.' -f1))""")
