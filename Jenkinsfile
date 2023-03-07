@@ -1,10 +1,8 @@
 pipeline{
     agent any
     environment {
-        new_tag = ""
-        major=""
-        minor=""
-        patch=""
+        GIT_LAST_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+        (GIT_MAJOR, GIT_MINOR, GIT_PATCH) = GIT_LAST_TAG.split('\\.')
     }
 
     stages{
@@ -13,6 +11,14 @@ pipeline{
                 checkout scm
             }
             
+        }
+        stage('Example') {
+            steps {
+                echo "Last Git tag is ${GIT_LAST_TAG}"
+                echo "Git major version is ${GIT_MAJOR}"
+                echo "Git minor version is ${GIT_MINOR}"
+                echo "Git patch version is ${GIT_PATCH}"
+            }
         }
         stage("version"){
             when{
