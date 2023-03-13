@@ -15,9 +15,14 @@ pipeline{
         stage('Example') {
             steps {
                 echo "Last Git tag is ${GIT_LAST_TAG}"
-                // echo "Git major version is ${GIT_MAJOR}"
-                // echo "Git minor version is ${GIT_MINOR}"
-                // echo "Git patch version is ${GIT_PATCH}"
+                def versionArray = GIT_LAST_TAG.split("\\.")
+                def major = versionArray[0]
+                def minor = versionArray[1]
+                def patch = versionArray[2]
+                echo "Major version: ${major}"
+                echo "Minor version: ${minor}"
+                echo "Patch version: ${patch}"  
+
             }
         }
         stage("version"){
@@ -32,7 +37,7 @@ pipeline{
                     sh "latest_tag=\$(git describe --tags --abbrev=0)"
                     def latest_tag = sh( script: """git describe --tags --abbrev=0""",returnStdout: true).trim()
                     echo "the value of latest tag is : ${latest_tag}"
-                    def majorOutput = sh(returnStdout: true, script: """major=\$(echo "$latest_tag" | cut -d '.' -f1)""")
+                    def majorOutput = sh(returnStdout: true, script: """echo "$latest_tag" | cut -d '.' -f1)""")
                     echo "${majorOutput}"
                     def minorOutput = sh(returnStdout: true, script: """minor=\$(echo "$latest_tag" | cut -d '.' -f2)""")
                     def patchOutput = sh(returnStdout: true, script: """patch=\$(echo "$latest_tag" | cut -d '.' -f3)""")
