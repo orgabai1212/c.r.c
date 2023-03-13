@@ -15,14 +15,13 @@ pipeline{
         stage('Example') {
             steps {
                 echo "Last Git tag is ${GIT_LAST_TAG}"
-                def versionArray = GIT_LAST_TAG.split("\\.")
+                def versionArray = sh(script: "echo ${GIT_LAST_TAG} | tr '.' '\\n'", returnStdout: true).trim().split('\n')
                 def major = versionArray[0]
                 def minor = versionArray[1]
                 def patch = versionArray[2]
-                echo "Major version: ${major}"
-                echo "Minor version: ${minor}"
-                echo "Patch version: ${patch}"  
-
+                echo "the major is $major"
+                echo "the minor is $minor"
+                echo "the patch is $patch"
             }
         }
         stage("version"){
