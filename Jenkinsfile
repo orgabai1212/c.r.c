@@ -29,32 +29,28 @@ pipeline{
             steps{
                 script{
                     
-                    // define latest tag
-        sh "latest_tag=\$(git describe --tags --abbrev=0)"
-        def latest_tag = sh(script: """latest_tag=\$(git describe --tags --abbrev=0)""", returnStdout: true).trim()
-        echo "the value of latest tag is : ${latest_tag}"
+                    sh "latest_tag=\$(git describe --tags --abbrev=0)"
+                    def latest_tag = sh( script: """git describe --tags --abbrev=0""",returnStdout: true).trim()
+                    echo "the value of latest tag is : ${latest_tag}"
+                    def majorOutput = sh(returnStdout: true, script: """major=\$(echo "$latest_tag" | cut -d '.' -f1)""")
+                    echo "${majorOutput}"
+                    def minorOutput = sh(returnStdout: true, script: """minor=\$(echo "$latest_tag" | cut -d '.' -f2)""")
+                    def patchOutput = sh(returnStdout: true, script: """patch=\$(echo "$latest_tag" | cut -d '.' -f3)""")
+                    major=majorOutput.trim()
+                    minor=minorOutput.trim()
+                    patch=patchOutput.trim()
+                    
+                    echo "${major}"
+                    echo "${minor}"
+                    echo "${patch}"
+                    patch++
+                    println "${patch}"
+                    sh ''' patch=\$((patch + 1))'''
+                    sh "echo \$patch"
+                    def commandOutput = sh(returnStdout: true, script: 'echo "\$major.\$minor.\$patch"')
+                    new_tag = commandOutput.trim()
+                    sh "git tag ${new_tag}" 
 
-        // extract major, minor, and patch versions
-        def majorOutput = sh(returnStdout: true, script: """major=\$(echo "$latest_tag" | cut -d '.' -f1)""")
-        def minorOutput = sh(returnStdout: true, script: """minor=\$(echo "$latest_tag" | cut -d '.' -f2)""")
-        def patchOutput = sh(returnStdout: true, script: """patch=\$(echo "$latest_tag" | cut -d '.' -f3)""")
-        env.major = majorOutput.trim()
-        env.minor = minorOutput.trim()
-        env.patch = patchOutput.trim()
-
-        echo "major: ${env.major}"
-        echo "minor: ${env.minor}"
-        echo "patch: ${env.patch}"
-
-        // increment patch version
-        env.patch = env.patch.toInteger() + 1
-        sh "echo \$patch"
-
-        // create new tag
-        def commandOutput = sh(returnStdout: true, script: 'echo "${env.major}.${env.minor}.${env.patch}"')
-        env.new_tag = commandOutput.trim()
-        sh "git tag ${env.new_tag}"
-    
                 }
             }
         }
