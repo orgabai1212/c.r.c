@@ -40,9 +40,9 @@ pipeline{
                     minor=minorOutput.trim()
                     patch=patchOutput.trim()
                     
-                    echo "${major}"
-                    echo "${minor}"
-                    echo "${patch}"
+                    echo "the major is ${major}"
+                    echo "the minor is ${minor}"
+                    echo "the patch ${patch}"
                     patch++
                     println "${patch}"
                     sh ''' patch=\$((patch + 1))'''
