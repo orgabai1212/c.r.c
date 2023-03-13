@@ -39,7 +39,6 @@ pipeline{
                     major=majorOutput.trim()
                     minor=minorOutput.trim()
                     patch=patchOutput.trim()
-                    
                     echo "the major is ${major}"
                     echo "the minor is ${minor}"
                     echo "the patch ${patch}"
