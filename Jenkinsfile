@@ -20,6 +20,7 @@ pipeline{
                 def major = versionArray[0]
                 def minor = versionArray[1]
                 def patch = versionArray[2]
+                patch ++
                 echo "the major is $major"
                 echo "the minor is $minor"
                 echo "the patch is $patch"
