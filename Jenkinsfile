@@ -26,6 +26,7 @@ pipeline{
                 echo "the minor is $minor"
                 echo "the patch is $patch"
                 echo "the new version is $newVersion"
+                sh "git tag $newVersion"
                 }
             }
         }
