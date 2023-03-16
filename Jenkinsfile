@@ -27,7 +27,8 @@ pipeline{
                 echo "the patch is $patch"
                 echo "the new version is $newVersion"
                 sh "git tag $newVersion"
-                sh"git push origin $newVersion"
+                sh"git push tag origin $newVersion"
+                echo"test blala"
                 }
             }
         }
