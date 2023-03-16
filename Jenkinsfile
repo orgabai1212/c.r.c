@@ -1,6 +1,7 @@
 pipeline{
     agent any
     environment {
+        sh (script:'git pull origin')
         GIT_LAST_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
         // (GIT_MAJOR, GIT_MINOR, GIT_PATCH) = GIT_LAST_TAG.split('.')
     }
@@ -27,7 +28,7 @@ pipeline{
                 echo "the patch is $patch"
                 echo "the new version is $newVersion"
                 sh "git tag $newVersion"
-                sh"git push tag origin $newVersion"
+                sh "git push origin  $newVersion"
                 echo"test blala"
                 }
             }
