@@ -2,7 +2,7 @@ pipeline{
     agent any
     environment {
         
-        GIT_LAST_TAG = sh(script: 'git pull origin && git describe --tags --abbrev=0', returnStdout: true).trim()
+        // GIT_LAST_TAG = sh(script: 'git pull origin && git describe --tags --abbrev=0', returnStdout: true).trim()
         // (GIT_MAJOR, GIT_MINOR, GIT_PATCH) = GIT_LAST_TAG.split('.')
     }
 
@@ -16,6 +16,8 @@ pipeline{
         stage('Example') {
             steps {
                 script{
+                sh "git pull origin"
+                GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
                 echo "Last Git tag is ${GIT_LAST_TAG}"
                 def versionArray = sh(script: "echo ${GIT_LAST_TAG} | tr '.' '\\n'", returnStdout: true).trim().split('\n')
                 def major = versionArray[0]
