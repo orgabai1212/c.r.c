@@ -16,7 +16,7 @@ pipeline{
         stage('Example') {
             steps {
                 script{
-                sh "git pull origin ${env.BRANCH_NAME}"
+                sh "git pull origin \${env.BRANCH_NAME}"
                 GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
                 echo "Last Git tag is ${GIT_LAST_TAG}"
                 def versionArray = sh(script: "echo ${GIT_LAST_TAG} | tr '.' '\\n'", returnStdout: true).trim().split('\n')
