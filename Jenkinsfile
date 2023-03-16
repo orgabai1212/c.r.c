@@ -16,6 +16,7 @@ pipeline{
         stage('Example') {
             steps {
                 script{
+                echo "Current branch: ${env.BRANCH_NAME}"
                 sh "git pull origin"
                 GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
                 echo "Last Git tag is ${GIT_LAST_TAG}"
