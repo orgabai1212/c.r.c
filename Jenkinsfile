@@ -16,10 +16,10 @@ pipeline{
         stage('Example') {
             steps {
                 script{
-                sh "git pull origin ${env.BRANCH_NAME}"
-                GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
-                echo "Last Git tag is ${GIT_LAST_TAG}"
-                def versionArray = sh(script: "echo ${GIT_LAST_TAG} | tr '.' '\\n'", returnStdout: true).trim().split('\n')
+                sh "git pull origin"
+                def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
+                echo "Last Git tag is $GIT_LAST_TAG"
+                def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
                 def major = versionArray[0]
                 def minor = versionArray[1]
                 def patch = versionArray[2]
