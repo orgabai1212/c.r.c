@@ -16,9 +16,9 @@ pipeline{
         stage('Example') {
             steps {
                 script{
-                sh "git pull origin"
-                sh "orgabai1212"
-                sh "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"
+                sh "git pull https://github.com/orgabai1212/c.r.c.git"
+                // sh "orgabai1212"
+                // sh "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"
                 def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
                 echo "Last Git tag is $GIT_LAST_TAG"
                 def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
