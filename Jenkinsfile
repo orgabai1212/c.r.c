@@ -1,10 +1,10 @@
 pipeline{
     agent any
-    environment {
-        branch = env.GIT_BRANCH
-        // GIT_LAST_TAG = sh(script: 'git pull origin && git describe --tags --abbrev=0', returnStdout: true).trim()
-        // (GIT_MAJOR, GIT_MINOR, GIT_PATCH) = GIT_LAST_TAG.split('.')
-    }
+    // environment {
+    //     branch = env.GIT_BRANCH
+    //     // GIT_LAST_TAG = sh(script: 'git pull origin && git describe --tags --abbrev=0', returnStdout: true).trim()
+    //     // (GIT_MAJOR, GIT_MINOR, GIT_PATCH) = GIT_LAST_TAG.split('.')
+    // }
 
     stages{
         stage("checkout"){
@@ -38,7 +38,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
-                 sh("git push https://$username:$password@github.com/orgabai1212/c.r.c.git ${branch} ")
+                 sh("git push https://$username:$password@github.com/orgabai1212/c.r.c.git $env.GIT_BRANCH ")
                     
                 }
                 sh "git push origin  $newVersion"
