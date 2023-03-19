@@ -19,7 +19,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
-                 sh("git push https://$username:$password@github.com/orgabai1212/c.r.c.git")
+                 sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                     
                 }
                 def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
