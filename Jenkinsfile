@@ -38,7 +38,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
-                 sh "git push origin HEAD:${env.GIT_BRANCH} $newVersion"
+                 sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
                     
                 }
                  
