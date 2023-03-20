@@ -38,10 +38,10 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
-                 sh("git push origin  ")
+                 sh "git push origin HEAD:${env.GIT_BRANCH} $newVersion"
                     
                 }
-                sh "git push origin  $newVersion"
+                 
                 echo "test blala"
                 }
             }
