@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "5000:5000"
+      - "6000:6000"
     depends_on:
       db:
         condition: service_healthy
@@ -23,6 +23,17 @@ services:
       start_period: 30s
     volumes:
       - db-vol:/var/lib/mysql
+  
+  jenkins:
+    image: jenkins
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    
 
 volumes:
-  db-vol:
+  - db-vol:
+  - jenkins-data:
