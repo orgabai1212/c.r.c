@@ -3,7 +3,7 @@ services:
   app_crc:
     build: .
     ports:
-      - "6000:6000"
+      - "5000:5000"
     depends_on:
       db:
         condition: service_healthy
@@ -25,7 +25,10 @@ services:
       - db-vol:/var/lib/mysql
   
   jenkins:
-    image: jenkins
+    build:
+      context: .
+      dockerfile: Dockerfile-jenkins
+    
     ports:
       - 8080:8080
       - 50000:50000
@@ -35,5 +38,5 @@ services:
     
 
 volumes:
-  - db-vol:
-  - jenkins-data:
+   db-vol:
+   jenkins-data:
