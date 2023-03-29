@@ -19,3 +19,4 @@ fi
 echo "Major: $major"
 echo "Minor: $minor"
 echo "Patch: $patch"
+export patch
