@@ -22,15 +22,13 @@ pipeline{
                      sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                     
                     }
-                
                     def version = sh(script: './check-tag.sh', returnStdout: true).trim()
-                    
                     echo "the new version is $version"
                     sh "git tag $version"
                     withCredentials([usernamePassword(credentialsId: 'crc-repo',
                      usernameVariable: 'username',
                      passwordVariable: 'password')]){
-                      sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
+                     sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
                     
                     }
                     
