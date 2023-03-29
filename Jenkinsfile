@@ -13,14 +13,14 @@ pipeline{
             }
             
         }
-        stages {
-            stage('Check for Git tag') {
-                steps {
-                    script {
-                        withCredentials([usernamePassword(credentialsId: 'crc-repo',
-                         usernameVariable: 'username',
-                         passwordVariable: 'password')]){
-                         sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
+         
+        stage('Check for Git tag') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'crc-repo',
+                        usernameVariable: 'username',
+                        passwordVariable: 'password')]){
+                        sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                     
                         }  
                         def tag = sh(script: 'git describe --tags --abbrev=0 2> /dev/null', returnStdout: true).trim()
@@ -42,21 +42,21 @@ pipeline{
                          echo "the minor is $minor"
                          echo "the patch is $patch"
                          echo "the new version is $newVersion"
-                        }
-                    }
-                }
-            }
-            stage('Push new Git tag') {
-                steps {
-                    script {
-                        withCredentials([usernamePassword(credentialsId: 'crc-repo', usernameVariable: 'username', passwordVariable: 'password')]) {
-                         sh "git tag $newVersion"
-                         sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
-                        }
                     }
                 }
             }
         }
+        stage('Push new Git tag') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'crc-repo', usernameVariable: 'username', passwordVariable: 'password')]) {
+                        sh "git tag $newVersion"
+                        sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
+                    }
+                }
+            }
+        }
+        
     
     }
 }
