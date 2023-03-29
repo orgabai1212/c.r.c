@@ -6,9 +6,9 @@ tag=$(git describe --tags --abbrev=0 2> /dev/null)
 if [ -z "$tag" ]
 then
   # If there are no tags, set major to 0, minor to 0, and patch to 1
-  major=0
+  major=1
   minor=0
-  patch=1
+  patch=0
 else
   # If there is a tag, extract the major, minor, and patch version numbers
   major=$(echo "$tag" | awk -F. '{print $1}')
