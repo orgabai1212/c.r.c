@@ -16,7 +16,5 @@ else
   patch=$(echo "$tag" | awk -F. '{print $3}')
 fi
 
-echo "Major: $major"
-echo "Minor: $minor"
-echo "Patch: $patch"
-export patch
+version="${major}.${minor}.${patch}"
+echo $version
