@@ -14,7 +14,7 @@ else
   major=$(echo "$tag" | awk -F. '{print $1}')
   minor=$(echo "$tag" | awk -F. '{print $2}')
   patch=$(echo "$tag" | awk -F. '{print $3}')
-  #patch=$((patch + 1))
+  patch=$((patch + 1))
 fi
 
 version="${major}.${minor}.${patch}"

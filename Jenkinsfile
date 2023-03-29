@@ -23,20 +23,10 @@ pipeline{
                     
                     }
                 
-                    def GIT_LAST_TAG = sh(script: './check-tag.sh', returnStdout: true).trim()
+                    def version = sh(script: './check-tag.sh', returnStdout: true).trim()
                     
-                    echo "Last Git tag is $GIT_LAST_TAG"
-                    def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
-                    def major = versionArray[0]
-                    def minor = versionArray[1]
-                    def patch = versionArray[2]
-                    patch ++
-                    def newVersion=major+"."+minor+"."+patch
-                    echo "the major is $major"
-                    echo "the minor is $minor"
-                    echo "the patch is $patch"
-                    echo "the new version is $newVersion"
-                    sh "git tag $newVersion"
+                    echo "the new version is $version"
+                    sh "git tag $version"
                     withCredentials([usernamePassword(credentialsId: 'crc-repo',
                      usernameVariable: 'username',
                      passwordVariable: 'password')]){
