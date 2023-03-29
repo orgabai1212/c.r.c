@@ -13,52 +13,53 @@ pipeline{
             }
             
         }
-        stage('version') {
-            steps {
-                script{
-                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
-                  usernameVariable: 'username',
-                  passwordVariable: 'password')]){
-                  sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
+        stages {
+            stage('Check for Git tag') {
+                steps {
+                    script {
+                        withCredentials([usernamePassword(credentialsId: 'crc-repo',
+                         usernameVariable: 'username',
+                         passwordVariable: 'password')]){
+                         sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                     
-                 }
-                 def GIT_TAGS = sh(script: 'git tag', returnStdout: true).trim()
-                 if (GIT_TAGS.empty) {
-                 echo "No tags found in the repository, setting major=0, minor=0, patch=1"
-                 def major = 0
-                 def minor = 0
-                 def patch = 1
-                 } 
-                 else {
-                 def GIT_LAST_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
-                 echo "Last Git tag is $GIT_LAST_TAG"
-                 def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
-                 def major = versionArray[0]
-                 def minor = versionArray[1]
-                 def patch = versionArray[2]
-                 patch ++
-                 }
-                 def newVersion=major+"."+minor+"."+patch
-                 echo "the major is $major"
-                 echo "the minor is $minor"
-                 echo "the patch is $patch"
-                 echo "the new version is $newVersion"
-                 sh "git tag $newVersion"
-                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
-                    usernameVariable: 'username',
-                    passwordVariable: 'password')]){
-                    sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
-                    
+                        }  
+                        def tag = sh(script: 'git describe --tags --abbrev=0 2> /dev/null', returnStdout: true).trim()
+                        if (tag == "") {
+                         echo "No Git tag found, setting version to 0.0.1"
+                         def major = 0
+                         def minor = 0
+                         def patch = 1
+                        } 
+                        else {
+                         echo "Git tag found: $tag"
+                         def versionArray = sh(script: "echo $tag | tr '.' '\\n'", returnStdout: true).trim().split('\n')
+                         def major = versionArray[0]
+                         def minor = versionArray[1]
+                         def patch = versionArray[2]
+                         patch++
+                         def newVersion = major + "." + minor + "." + patch
+                         echo "the major is $major"
+                         echo "the minor is $minor"
+                         echo "the patch is $patch"
+                         echo "the new version is $newVersion"
+                        }
                     }
-                 
-                
-                
                 }
             }
-        
-        
-    
+            stage('Push new Git tag') {
+                steps {
+                    script {
+                        withCredentials([usernamePassword(credentialsId: 'crc-repo', usernameVariable: 'username', passwordVariable: 'password')]) {
+                         sh "git tag $newVersion"
+                         sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
+                        }
+                    }
+                }
+            }
         }
     
     }
 }
+
+
+
