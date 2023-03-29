@@ -23,7 +23,7 @@ pipeline{
                     
                 }
                 
-                def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
+                def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0 2> /dev/null', returnStdout: true).trim()
                 if (GIT_LAST_TAG==""){
                     echo "no tags"
                 }
