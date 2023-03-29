@@ -16,37 +16,49 @@ pipeline{
         stage('version') {
             steps {
                 script{
-                withCredentials([usernamePassword(credentialsId: 'crc-repo',
-                 usernameVariable: 'username',
-                 passwordVariable: 'password')]){
-                 sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
+                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
+                  usernameVariable: 'username',
+                  passwordVariable: 'password')]){
+                  sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                     
-                }
-                def GIT_LAST_TAG = sh(script: ' git describe --tags --abbrev=0', returnStdout: true).trim()
-                echo "Last Git tag is $GIT_LAST_TAG"
-                def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
-                def major = versionArray[0]
-                def minor = versionArray[1]
-                def patch = versionArray[2]
-                patch ++
-                def newVersion=major+"."+minor+"."+patch
-                echo "the major is $major"
-                echo "the minor is $minor"
-                echo "the patch is $patch"
-                echo "the new version is $newVersion"
-                sh "git tag $newVersion"
-                withCredentials([usernamePassword(credentialsId: 'crc-repo',
-                 usernameVariable: 'username',
-                 passwordVariable: 'password')]){
-                 sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
+                 }
+                 def GIT_TAGS = sh(script: 'git tag', returnStdout: true).trim()
+                 if (GIT_TAGS.empty) {
+                 echo "No tags found in the repository, setting major=0, minor=0, patch=1"
+                 def major = 0
+                 def minor = 0
+                 def patch = 1
+                 } 
+                 else {
+                 def GIT_LAST_TAG = sh(script: 'git describe --tags --abbrev=0', returnStdout: true).trim()
+                 echo "Last Git tag is $GIT_LAST_TAG"
+                 def versionArray = sh(script: "echo $GIT_LAST_TAG | tr '.' '\\n'", returnStdout: true).trim().split('\n')
+                 def major = versionArray[0]
+                 def minor = versionArray[1]
+                 def patch = versionArray[2]
+                 patch ++
+                 }
+                 def newVersion=major+"."+minor+"."+patch
+                 echo "the major is $major"
+                 echo "the minor is $minor"
+                 echo "the patch is $patch"
+                 echo "the new version is $newVersion"
+                 sh "git tag $newVersion"
+                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
+                    usernameVariable: 'username',
+                    passwordVariable: 'password')]){
+                    sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $newVersion"
                     
-                }
+                    }
                  
-                echo "test blala"
+                
+                
                 }
             }
-        }
         
-    }
+        
     
+        }
+    
+    }
 }
