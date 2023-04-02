@@ -25,8 +25,12 @@ services:
       start_period: 30s
     volumes:
       - db-vol:/var/lib/mysql
-      - ./update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
-  
+      # - ${PWD}/update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
+      - ${PWD}/mysql:/docker-entrypoint-initdb.d
+
+
+
+
   
     
 
