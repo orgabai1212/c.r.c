@@ -27,19 +27,9 @@ services:
       - db-vol:/var/lib/mysql
       - .update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
   
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile-jenkins
-    
-    ports:
-      - 8080:8080
-      - 50000:50000
-    volumes:
-      - jenkins-data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+  
     
 
 volumes:
    db-vol:
-   jenkins-data:
+   
