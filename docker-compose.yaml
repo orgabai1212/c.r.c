@@ -5,8 +5,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - db:
-          condition: "service_healthy"
+      db:
+        condition: "service_healthy"
 
 
   db:
@@ -25,7 +25,7 @@ services:
       start_period: 30s
     volumes:
       - db-vol:/var/lib/mysql
-      - .update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
+      - ./update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
   
   
     
