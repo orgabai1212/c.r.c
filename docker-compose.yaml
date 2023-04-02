@@ -5,8 +5,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db:
+          condition: service_healthy
 
 
   db:
@@ -31,5 +31,5 @@ services:
     
 
 volumes:
-   db-vol:
+   - db-vol:
    
