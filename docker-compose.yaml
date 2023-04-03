@@ -1,4 +1,4 @@
-version: '3'
+version: '2.2'
 services:
   app_crc:
     build: .
@@ -7,7 +7,7 @@ services:
     
     depends_on:
       db:
-        condition: "service_healthy"
+         condition: service_healthy
 
 
   db:
@@ -32,4 +32,3 @@ services:
 
 volumes:
     db-vol:
-   
