@@ -22,16 +22,12 @@ services:
       test: ["CMD", "mysqladmin","ping","-h","localhost"]
       timeout: 20s
       retries: 10
-      start_period: 30s
+      # start_period: 30s
     volumes:
       - "db-vol:/var/lib/mysql"
       # - ${PWD}/update-db.sh:/docker-entrypoint-initdb.d/update-db.sh
       - "${PWD}/mysql:/docker-entrypoint-initdb.d"
 
-
-
-  
-    
 
 volumes:
     db-vol:
