@@ -7,8 +7,8 @@ RUN groupadd docker
 # Docker installer
 RUN apt-get update -y && \
 apt install docker.io -y && \
-apt install docker-compose -y && \
-usermod -aG docker jenkins
+apt install docker-compose -y 
+RUN usermod -aG docker jenkins
 RUN chmod 666 /var/run/docker.sock
 # Back to jenkins user (Only root can perform actions and user jenkins is limited)
 USER jenkins
