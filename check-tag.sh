@@ -20,70 +20,121 @@
 # version="${major}.${minor}.${patch}"
 # echo $version
 
-branch=$(git symbolic-ref --short HEAD)
+# branch=$(git symbolic-ref --short HEAD)
+# tags=$(git tag)
+# tags_array=()
+# flag=0
+
+# IFS='/' read -ra branch_parts <<< "$branch"
+# version=${branch_parts[1]}
+# # echo " general version $version"
+# major=$(echo "$version" | awk -F. '{print $1}')
+# minor=$(echo "$version" | awk -F. '{print $2}')
+# patch=$(echo "$version" | awk -F. '{print $3}')
+
+# if [[ -z $tags ]]; then
+#     # echo "no tags"
+#     git tag $version
+#     echo "$version"
+#     exit 0
+# else
+#   # echo "start else"
+#   for tag in $tags; do
+#     # echo "try for"
+#     if [[ $tag == $version ]]; then
+#       flag=1
+#       for tag in $tags; do
+#         # echo "second for"
+#         temp_major=$(echo "$tag" | awk -F. '{print $1}')
+#         temp_minor=$(echo "$tag" | awk -F. '{print $2}')
+#         if [[ $temp_major == $major && $temp_minor == $minor ]]; then
+#           tags_array+=("$tag")
+#           # echo "add tag to array tag:$tag"
+#         fi
+#       done
+#     fi
+#   done
+# fi
+# if [[ $flag == 0 ]]; then
+#   # echo "no tag found with the same version"
+#   git tag $version
+#   echo "$version"
+#   exit 0
+# fi
+
+# # echo "part 3"
+# max_patch=$patch
+# # echo "max patch $max_patch"
+# max_patch_version=""
+# for tag in "${tags_array[@]}"; do
+#     # echo "therd for "
+#     # Extract patch number from version
+#     temp_patch=$(echo "$tag" | awk -F'.' '{print $3}')
+#     # echo "the tag patch $temp_patch"
+
+#     # Check if patch is greater than the current max_patch
+#     if [[ -z "$max_patch" || "$temp_patch" -ge "$max_patch" ]]; then
+#         max_patch="$temp_patch"
+#         # echo "max path $max_patch"
+#         max_patch_version="$tag"
+#         # echo "max patch version $max_patch_version"
+#     fi
+# done
+# max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
+# # echo "max_patch_version_patch is $max_patch_version_patch"
+# max_patch_version_patch=$((max_patch_version_patch + 1))
+# new_version="${major}.${minor}.${max_patch_version_patch}"
+# echo "$new_version" 
+# git tag $new_version
+# #abcdg
+
+# ======================================================
+branch="${GIT_BRANCH#*/}"
 tags=$(git tag)
 tags_array=()
 flag=0
 
 IFS='/' read -ra branch_parts <<< "$branch"
 version=${branch_parts[1]}
-# echo " general version $version"
 major=$(echo "$version" | awk -F. '{print $1}')
 minor=$(echo "$version" | awk -F. '{print $2}')
 patch=$(echo "$version" | awk -F. '{print $3}')
 
 if [[ -z $tags ]]; then
-    # echo "no tags"
     git tag $version
     echo "$version"
     exit 0
 else
-  # echo "start else"
-  for tag in $tags; do
-    # echo "try for"
-    if [[ $tag == $version ]]; then
-      flag=1
-      for tag in $tags; do
-        # echo "second for"
-        temp_major=$(echo "$tag" | awk -F. '{print $1}')
-        temp_minor=$(echo "$tag" | awk -F. '{print $2}')
-        if [[ $temp_major == $major && $temp_minor == $minor ]]; then
-          tags_array+=("$tag")
-          # echo "add tag to array tag:$tag"
+    for tag in $tags; do
+        if [[ $tag == $version ]]; then
+            flag=1
+            for tag in $tags; do
+                temp_major=$(echo "$tag" | awk -F. '{print $1}')
+                temp_minor=$(echo "$tag" | awk -F. '{print $2}')
+                if [[ $temp_major == $major && $temp_minor == $minor ]]; then
+                    tags_array+=("$tag")
+                fi
+            done
         fi
-      done
-    fi
-  done
+    done
 fi
 if [[ $flag == 0 ]]; then
-  # echo "no tag found with the same version"
-  git tag $version
-  echo "$version"
-  exit 0
+    git tag $version
+    echo "$version"
+    exit 0
 fi
 
-# echo "part 3"
 max_patch=$patch
-# echo "max patch $max_patch"
 max_patch_version=""
 for tag in "${tags_array[@]}"; do
-    # echo "therd for "
-    # Extract patch number from version
     temp_patch=$(echo "$tag" | awk -F'.' '{print $3}')
-    # echo "the tag patch $temp_patch"
-
-    # Check if patch is greater than the current max_patch
     if [[ -z "$max_patch" || "$temp_patch" -ge "$max_patch" ]]; then
         max_patch="$temp_patch"
-        # echo "max path $max_patch"
         max_patch_version="$tag"
-        # echo "max patch version $max_patch_version"
     fi
 done
 max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
-# echo "max_patch_version_patch is $max_patch_version_patch"
 max_patch_version_patch=$((max_patch_version_patch + 1))
 new_version="${major}.${minor}.${max_patch_version_patch}"
-echo "$new_version" 
+echo "$new_version"
 git tag $new_version
-#abcdg
