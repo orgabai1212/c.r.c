@@ -1,24 +1,24 @@
-#!/bin/bash
+!/bin/bash
 
-# # Check if there are any tags in the Git repository
-# tag=$(git describe --tags --abbrev=0 2> /dev/null)
+# Check if there are any tags in the Git repository
+tag=$(git describe --tags --abbrev=0 2> /dev/null)
 
-# if [ -z "$tag" ]
-# then
-#   # If there are no tags, set major to 0, minor to 0, and patch to 1
-#   major=1
-#   minor=0
-#   patch=0
-# else
-#   # If there is a tag, extract the major, minor, and patch version numbers
-#   major=$(echo "$tag" | awk -F. '{print $1}')
-#   minor=$(echo "$tag" | awk -F. '{print $2}')
-#   patch=$(echo "$tag" | awk -F. '{print $3}')
-#   patch=$((patch + 1))
-# fi
+if [ -z "$tag" ]
+then
+  # If there are no tags, set major to 0, minor to 0, and patch to 1
+  major=1
+  minor=0
+  patch=0
+else
+  # If there is a tag, extract the major, minor, and patch version numbers
+  major=$(echo "$tag" | awk -F. '{print $1}')
+  minor=$(echo "$tag" | awk -F. '{print $2}')
+  patch=$(echo "$tag" | awk -F. '{print $3}')
+  patch=$((patch + 1))
+fi
 
-# version="${major}.${minor}.${patch}"
-# echo $version
+version="${major}.${minor}.${patch}"
+echo $version
 
 # branch=$(git symbolic-ref --short HEAD)
 # tags=$(git tag)
@@ -89,52 +89,52 @@
 # #abcdg
 
 # ======================================================
-branch="${GIT_BRANCH#*/}"
-tags=$(git tag)
-tags_array=()
-flag=0
+# branch="${GIT_BRANCH#*/}"
+# tags=$(git tag)
+# tags_array=()
+# flag=0
 
-IFS='/' read -ra branch_parts <<< "$branch"
-version=${branch_parts[1]}
-major=$(echo "$version" | awk -F. '{print $1}')
-minor=$(echo "$version" | awk -F. '{print $2}')
-patch=$(echo "$version" | awk -F. '{print $3}')
+# IFS='/' read -ra branch_parts <<< "$branch"
+# version=${branch_parts[1]}
+# major=$(echo "$version" | awk -F. '{print $1}')
+# minor=$(echo "$version" | awk -F. '{print $2}')
+# patch=$(echo "$version" | awk -F. '{print $3}')
 
-if [[ -z $tags ]]; then
-    git tag $version
-    echo "$version"
-    exit 0
-else
-    for tag in $tags; do
-        if [[ $tag == $version ]]; then
-            flag=1
-            for tag in $tags; do
-                temp_major=$(echo "$tag" | awk -F. '{print $1}')
-                temp_minor=$(echo "$tag" | awk -F. '{print $2}')
-                if [[ $temp_major == $major && $temp_minor == $minor ]]; then
-                    tags_array+=("$tag")
-                fi
-            done
-        fi
-    done
-fi
-if [[ $flag == 0 ]]; then
-    git tag $version
-    echo "$version"
-    exit 0
-fi
+# if [[ -z $tags ]]; then
+#     git tag $version
+#     echo "$version"
+#     exit 0
+# else
+#     for tag in $tags; do
+#         if [[ $tag == $version ]]; then
+#             flag=1
+#             for tag in $tags; do
+#                 temp_major=$(echo "$tag" | awk -F. '{print $1}')
+#                 temp_minor=$(echo "$tag" | awk -F. '{print $2}')
+#                 if [[ $temp_major == $major && $temp_minor == $minor ]]; then
+#                     tags_array+=("$tag")
+#                 fi
+#             done
+#         fi
+#     done
+# fi
+# if [[ $flag == 0 ]]; then
+#     git tag $version
+#     echo "$version"
+#     exit 0
+# fi
 
-max_patch=$patch
-max_patch_version=""
-for tag in "${tags_array[@]}"; do
-    temp_patch=$(echo "$tag" | awk -F'.' '{print $3}')
-    if [[ -z "$max_patch" || "$temp_patch" -ge "$max_patch" ]]; then
-        max_patch="$temp_patch"
-        max_patch_version="$tag"
-    fi
-done
-max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
-max_patch_version_patch=$((max_patch_version_patch + 1))
-new_version="${major}.${minor}.${max_patch_version_patch}"
-echo "$new_version"
-git tag $new_version
+# max_patch=$patch
+# max_patch_version=""
+# for tag in "${tags_array[@]}"; do
+#     temp_patch=$(echo "$tag" | awk -F'.' '{print $3}')
+#     if [[ -z "$max_patch" || "$temp_patch" -ge "$max_patch" ]]; then
+#         max_patch="$temp_patch"
+#         max_patch_version="$tag"
+#     fi
+# done
+# max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
+# max_patch_version_patch=$((max_patch_version_patch + 1))
+# new_version="${major}.${minor}.${max_patch_version_patch}"
+# echo "$new_version"
+# git tag $new_version
