@@ -27,7 +27,7 @@ flag=0
 
 IFS='/' read -ra branch_parts <<< "$branch"
 version=${branch_parts[1]}
-#echo " general version $version"
+# echo " general version $version"
 major=$(echo "$version" | awk -F. '{print $1}')
 minor=$(echo "$version" | awk -F. '{print $2}')
 patch=$(echo "$version" | awk -F. '{print $3}')
@@ -35,20 +35,21 @@ patch=$(echo "$version" | awk -F. '{print $3}')
 if [[ -z $tags ]]; then
     # echo "no tags"
     git tag $version
+    echo "$version"
     exit 0
 else
   # echo "start else"
   for tag in $tags; do
- #   echo "try for"
+    # echo "try for"
     if [[ $tag == $version ]]; then
       flag=1
       for tag in $tags; do
-  #      echo "second for"
+        # echo "second for"
         temp_major=$(echo "$tag" | awk -F. '{print $1}')
         temp_minor=$(echo "$tag" | awk -F. '{print $2}')
         if [[ $temp_major == $major && $temp_minor == $minor ]]; then
           tags_array+=("$tag")
-   #       echo "add tag to array tag:$tag"
+          # echo "add tag to array tag:$tag"
         fi
       done
     fi
@@ -57,6 +58,7 @@ fi
 if [[ $flag == 0 ]]; then
   # echo "no tag found with the same version"
   git tag $version
+  echo "$version"
   exit 0
 fi
 
@@ -79,9 +81,9 @@ for tag in "${tags_array[@]}"; do
     fi
 done
 max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
-#echo "max_patch_version_patch is $max_patch_version_patch"
+# echo "max_patch_version_patch is $max_patch_version_patch"
 max_patch_version_patch=$((max_patch_version_patch + 1))
 new_version="${major}.${minor}.${max_patch_version_patch}"
-echo "new version $new_version" 
+echo "$new_version" 
 git tag $new_version
 #abcdg
