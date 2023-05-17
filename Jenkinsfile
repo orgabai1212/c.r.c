@@ -52,7 +52,7 @@ pipeline{
                      passwordVariable: 'password')]){
                      sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $version"
                      sh "docker build -t crc_app:$version ."
-                     sh "docker tag crc_app:$version 932763848879.dkr.ecr.eu-central-1.amazonaws.com/crc_app:$version"
+                     sh "docker tag crc_app:$version 932763848879.dkr.ecr.eu-central-1.amazonaws.com/crc:$version"
                      sh "docker push 932763848879.dkr.ecr.eu-central-1.amazonaws.com/crc:$version"
                     
                     }
