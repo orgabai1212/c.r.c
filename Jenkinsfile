@@ -3,7 +3,7 @@ pipeline{
     environment {
         test_ip = "3.123.37.155"
         app_port = "5000"
-        
+        TAG=""
         deploy_ip ="15.237.112.154"
         
        
@@ -55,7 +55,7 @@ pipeline{
                     
                     }
                     
-                
+                    TAG=$version
                 }
             }
         }
