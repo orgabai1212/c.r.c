@@ -1,10 +1,7 @@
 version: '2.2'
 services:
   app_crc:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: myimage:${TAG}
+    build: .
     ports:
       - "5000:5000"
     

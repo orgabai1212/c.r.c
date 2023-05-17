@@ -3,7 +3,6 @@ pipeline{
     environment {
         test_ip = "3.123.37.155"
         app_port = "5000"
-        TAG=""
         deploy_ip ="15.237.112.154"
         
        
@@ -37,7 +36,7 @@ pipeline{
 
 
         }
-        stage('version') {
+        stage('version + ecr') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'crc-repo2',
@@ -52,26 +51,29 @@ pipeline{
                      usernameVariable: 'username',
                      passwordVariable: 'password')]){
                      sh "git push https://$username:$password@github.com/orgabai1212/c.r.c.git $version"
+                     sh "docker build -t crc_app:$version ."
+                     sh "docker tag crc_app:$version 932763848879.dkr.ecr.eu-central-1.amazonaws.com/crc_app:$version"
+                     sh "docker push 932763848879.dkr.ecr.eu-central-1.amazonaws.com/crc:$version"
                     
                     }
                     
-                    env.TAG=version
+                    
                 }
             }
         }
-        stage('ecr'){
-            steps{
-                sh "docker-compose build --build-arg TAG=${env.TAG}"
+        // stage('ecr'){
+        //     steps{
+        //         sh ""
                 
 
 
 
 
-            }
+        //     }
 
 
 
-        }
+        // }
         // aoucxhasjcpaoj
         
     }
