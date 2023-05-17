@@ -88,9 +88,12 @@ pipeline{
 
         stage("update git changes"){
             steps{
+
                 withCredentials([usernamePassword(credentialsId: 'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
+                 sh("git config --global user.email 'orgabai1212@gmail.com'")
+                 sh("git config --global user.name 'or gabay'")
                  sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                 }
 
