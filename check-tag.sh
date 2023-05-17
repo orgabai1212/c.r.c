@@ -33,11 +33,11 @@ minor=$(echo "$version" | awk -F. '{print $2}')
 patch=$(echo "$version" | awk -F. '{print $3}')
 
 if [[ -z $tags ]]; then
-    echo "no tags"
+    # echo "no tags"
     git tag $version
     exit 0
 else
-  echo "start else"
+  # echo "start else"
   for tag in $tags; do
     echo "try for"
     if [[ $tag == $version ]]; then
@@ -55,27 +55,27 @@ else
   done
 fi
 if [[ $flag == 0 ]]; then
-  echo "no tag found with the same version"
+  # echo "no tag found with the same version"
   git tag $version
   exit 0
 fi
 
-echo "part 3"
+# echo "part 3"
 max_patch=$patch
-echo "max patch $max_patch"
+# echo "max patch $max_patch"
 max_patch_version=""
 for tag in "${tags_array[@]}"; do
-    echo "therd for "
+    # echo "therd for "
     # Extract patch number from version
     temp_patch=$(echo "$tag" | awk -F'.' '{print $3}')
-    echo "the tag patch $temp_patch"
+    # echo "the tag patch $temp_patch"
 
     # Check if patch is greater than the current max_patch
     if [[ -z "$max_patch" || "$temp_patch" -ge "$max_patch" ]]; then
         max_patch="$temp_patch"
-        echo "max path $max_patch"
+        # echo "max path $max_patch"
         max_patch_version="$tag"
-        echo "max patch version $max_patch_version"
+        # echo "max patch version $max_patch_version"
     fi
 done
 max_patch_version_patch=$(echo "$max_patch_version" | awk -F. '{print $3}')
