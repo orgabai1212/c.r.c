@@ -19,7 +19,7 @@ pipeline{
 
         stage("test build "){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'crc-repo',
+                withCredentials([usernamePassword(credentialsId:'crc-repo',
                  usernameVariable: 'username',
                  passwordVariable: 'password')]){
                  sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
