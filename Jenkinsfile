@@ -55,9 +55,22 @@ pipeline{
                     
                     }
                     
-                    TAG=$version
+                    env.TAG=version
                 }
             }
+        }
+        stage('ecr'){
+            steps{
+                sh "docker-compose build --build-arg TAG=${env.TAG}"
+                
+
+
+
+
+            }
+
+
+
         }
         // aoucxhasjcpaoj
         
