@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment {
-        test_ip = "3.120.247.120"
+        test_ip = "3.123.37.155"
         app_port = "5000"
         
         deploy_ip ="15.237.112.154"
