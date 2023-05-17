@@ -3,7 +3,7 @@ pipeline{
     environment {
         test_ip = "3.123.37.155"
         app_port = "5000"
-        deploy_ip ="15.237.112.154"
+        deploy_ip ="18.192.209.235"
         
        
     }
@@ -64,15 +64,21 @@ pipeline{
                 }
             }
         }
-        // stage('ecr'){
-        //     steps{
-        //         sh ""
+        stage('ssh'){
+            steps{
+                withCredentials([sshUserPrivateKey(credentialsId: "ssh", keyFileVariable: "", usernameVariable: "ssh")]) {
+                    sh "ssh ubuntu@${deploy_ip} touch motherfucker"
+                    // sh "ssh ubuntu@${deploy_ip} docker image rm -f 644435390668.dkr.ecr.eu-west-3.amazonaws.com/or-cowsay:v3"
+                    // sh "ssh ubuntu@${deploy_ip} aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 644435390668.dkr.ecr.eu-west-3.amazonaws.com"
+            		// sh "ssh ubuntu@${deploy_ip} docker pull 644435390668.dkr.ecr.eu-west-3.amazonaws.com/or-cowsay:v3"
+                    // sh "ssh ubuntu@${deploy_ip} docker run -d --name cowsay_mission -p ${deploy_port}:3001 -e PORT=3001 644435390668.dkr.ecr.eu-west-3.amazonaws.com/or-cowsay:v3"
+                }
                 
 
 
 
 
-        //     }
+            }
 
 
 
