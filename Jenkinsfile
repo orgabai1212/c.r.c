@@ -93,16 +93,16 @@ pipeline{
         // aoucxhasjcpaoj
         
     }
-    post {
-        success {
-            mail to: "orgabai1212@gmail.com", subject: "succes", body: "new build pass"
-        }
-        failure {
-            mail to: "orgabi1212@gmail.com", subject: "failure", body: "new build faild"
-        }
+    // post {
+    //     success {
+    //         mail to: "orgabai1212@gmail.com", subject: "succes", body: "new build pass"
+    //     }
+    //     failure {
+    //         mail to: "orgabi1212@gmail.com", subject: "failure", body: "new build faild"
+    //     }
 
         
-    }
+    // }
     
 }
 
