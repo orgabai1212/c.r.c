@@ -1,4 +1,4 @@
 FROM mysql
-# WORKDIR /crc-data
-# COPY mysql_dump.sql /crc-data
-# COPY update-db.sh /crc-data
+WORKDIR /crc-data
+COPY mysql_dump.sql /crc-data
+COPY update-db.sh /crc-data
