@@ -73,9 +73,9 @@ pipeline{
                      sh("git pull https://$username:$password@github.com/orgabai1212/c.r.c.git")
                      
                     }
-                    sh "ssh ubuntu@${deploy_ip} docker-compose down -v "
-                    sh "ssh ubuntu@${deploy_ip} docker-compose build --no-cache"
-                    sh "ssh ubuntu@${deploy_ip} docker-compose up -d"
+                    sh "ssh ubuntu@${deploy_ip} docker compose down -v "
+                    sh "ssh ubuntu@${deploy_ip} docker compose build --no-cache"
+                    sh "ssh ubuntu@${deploy_ip} docker compose up -d"
                     sleep (time: 5, unit: 'SECONDS')
                     sh"ssh ubuntu@${deploy_ip} curl -v ${deploy_ip}:${app_port}"
                     
