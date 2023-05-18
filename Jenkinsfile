@@ -66,7 +66,7 @@ pipeline{
         }
         stage('ssh'){
             steps{
-                sshagent(credentials: ['ssh']) {
+                sshagent(['ssh']) {
                  // Steps that require SSH access
                     sh 'ssh ubuntu@${deploy_ip} touch fuck'
                 }
