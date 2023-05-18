@@ -66,10 +66,9 @@ pipeline{
         }
         stage('ssh'){
             steps{
-                withCredentials([sshUserPrivateKey(credentialsId: "ssh", keyFileVariable: "", usernameVariable: "ssh")]) {
-                 // Steps that require SSH access
-                    sh 'ssh ubuntu@${deploy_ip} touch fuck'
-                }
+                
+                sh 'ssh ubuntu@${deploy_ip} touch fuck'
+                
                 
 
 
